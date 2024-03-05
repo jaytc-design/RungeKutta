@@ -4,7 +4,10 @@ use ndarray::Array;
 fn main() {
     // println!("Enter x0,y0,xn,h:");
     // let (x0, y0, xn, h) = (inp(), inp(), inp(), inp());
+    static g: f64 = 9.8;
 
+    let (const L1: f64, const L2: f64, const theta1: f64, const theta2: f64) = (1.0, 1.0, 0.0, 0.0);
+    
     for i in 
         rk4(|_t, y| y.clone(), 
             arr1(&[0.0, 1.0]), 
