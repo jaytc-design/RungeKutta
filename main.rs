@@ -2,18 +2,40 @@ use ndarray::prelude::*;
 use ndarray::Array;
 
 fn main() {
-    // println!("Enter x0,y0,xn,h:");
-    // let (x0, y0, xn, h) = (inp(), inp(), inp(), inp());
+    const GRAVITY: f64 = 9.80665;
+    const LENGTH1: f64 = 1.0;
+    const LENGTH2: f64 = 1.0;
+    const MASS1: f64 = 2.0;
+    const MASS2: f64 = 2.0;
 
     for i in 
-        rk4(|_t, y| y.clone(), 
-            arr1(&[0.0, 1.0]), 
+        rk4(|_t, y| { 
+            let theta1 = y[0];
+            let theta2 = y[1];
+            let omega1 = y[2];
+            let omega2 = y[3];
+
+
+            let mut omega1_prime = -GRAVITY * (2.0 * MASS1 + MASS2) * (theta1).sin() - MASS2 * GRAVITY * (theta1 - 2.0 * theta2).sin() - 2.0 * (theta1 - theta2).sin() * MASS2 * (omega2 * omega2 * LENGTH2 + omega1 * omega1 * LENGTH1 * (theta1 - theta2).cos());
+            let mut omega2_prime = 2.0 * (theta1 - theta2).sin() * (omega1 * omega1 * LENGTH1 * (MASS1 + MASS2) + GRAVITY * (MASS1 + MASS2) * (theta1).cos()) + omega2 * omega2 * LENGTH2 * MASS2 * (theta1 - theta2).cos();
+            omega1_prime /= LENGTH1 * (2.0 * MASS1 + MASS2 - MASS2 * (2.0 * theta1 - 2.0 * theta2).cos());
+            omega2_prime /= LENGTH2 * (2.0 * MASS1 + MASS2 - MASS2 * (2.0 * theta1 - 2.0 * theta2).cos());
+
+            // < theta1' ,theta2', omega1', omega2' > (feed into runge kutta) 
+            Array::from(vec![ // CHECK USE OF OMEGAS
+                omega1, 
+                omega2, 
+                omega1_prime,
+                omega2_prime
+            ])
+        }, 
+            arr1(&[0.994837673637, 0.436332312999, 0.0, 0.0]), // < theta1, theta2, omega1, omega2 >
             0.0, 
             10.0, 
-            100.0
+            10000.0,
         )
     {
-        println!("{:?}", i);
+        println!("theta1: {}\ntheta2: {}\nomega1: {}\nomega2: {}\n------------", i[0], i[1], i[2], i[3]);
     }
 }
 
