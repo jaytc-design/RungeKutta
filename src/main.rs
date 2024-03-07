@@ -57,7 +57,7 @@ fn main() {
         ).iter().enumerate()
     {
         // println!("theta1: {}\ntheta2: {}\nomega1: {}\nomega2: {}\n------------", i[0], i[1], i[2], i[3]);
-        writeln!(f, "------STEP {}------\ntheta1: {}\ntheta2: {}\nomega1: {}\nomega2: {}", i, v[0], v[1], v[2], v[3]).unwrap();
+        writeln!(f, "------STEP {}------\ntheta1: {}\ntheta2: {}\nomega1: {}\nomega2: {}\nproduct: {}", i, v[0], v[1], v[2], v[3], v[0] * v[1]).unwrap();
     }
 
     drop(f);
