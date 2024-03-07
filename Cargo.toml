@@ -10,4 +10,4 @@ ndarray = { version = "0.15.6", default-features = true }
 
 [[bin]]
 name = "runge_kutta"
-path = "main.rs"
+path = "src/main.rs"
